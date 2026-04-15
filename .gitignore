@@ -1,0 +1,10 @@
+*.o
+*.obj
+*.os
+*.a
+*.lib
+src/.vs
+.sconsign.dblite
+project/.godot/
+project/bin/
+gen/
