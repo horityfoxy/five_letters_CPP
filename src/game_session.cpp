@@ -21,6 +21,10 @@ namespace FiveLetters {
     GameSession::~GameSession() {}
 
     void GameSession::_ready() {
+        godot::UtilityFunctions::randomize();
+        word_db.instantiate();
+        if (path.is_empty()) { return; }
+        word_db->load_from_file(path);
         start_game();
     }
 
@@ -30,10 +34,6 @@ namespace FiveLetters {
 
     void GameSession::start_game() {
         godot::UtilityFunctions::print("Game session started with ", max_attempts, " attempts.");
-        godot::UtilityFunctions::randomize();
-        word_db.instantiate();
-        if (path.is_empty()) { return; }
-        word_db->load_from_file(path);
         secret_word = word_db->get_random_word();
     }
 
