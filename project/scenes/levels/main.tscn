@@ -1,0 +1,49 @@
+[gd_scene format=3 uid="uid://b2ycw0mfrvbqb"]
+
+[sub_resource type="GDScript" id="GDScript_2vj2h"]
+script/source = "extends Control
+
+@export var _GameSession : GameSession
+@export var _WordsZone : VBoxContainer
+
+func _ready() -> void:
+	_WordsZone.setup_zone(_GameSession.get_max_attempts(), _GameSession)
+	print(_GameSession.process_guess(\"ладья\"))
+"
+
+[sub_resource type="GDScript" id="GDScript_72ix8"]
+script/source = "extends VBoxContainer
+
+var word_zone = preload(\"res://scenes/word_zone.tscn\")
+
+func setup_zone(max_attempts : int, gamesession : GameSession) -> void:
+	for i in max_attempts:
+		var child = word_zone.instantiate()
+		gamesession.guess_processed.connect(child.set_colors)
+		add_child(child)
+"
+
+[node name="main" type="Control" unique_id=1268794472]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="words" type="Control" parent="." unique_id=507232364 node_paths=PackedStringArray("_GameSession", "_WordsZone")]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = SubResource("GDScript_2vj2h")
+_GameSession = NodePath("GameSession")
+_WordsZone = NodePath("words_zone")
+
+[node name="GameSession" type="GameSession" parent="words" unique_id=147646485]
+path = "res://assets/database/ru.txt"
+
+[node name="words_zone" type="VBoxContainer" parent="words" unique_id=1291712528]
+layout_mode = 0
+offset_right = 327.0
+offset_bottom = 328.0
+script = SubResource("GDScript_72ix8")

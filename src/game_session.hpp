@@ -6,6 +6,7 @@
 
 namespace FiveLetters {
     class WordDatabase;
+    class ValidateGuess;
 
     class GameSession : public godot::Node {
         GDCLASS(GameSession, godot::Node)
@@ -15,6 +16,7 @@ namespace FiveLetters {
         godot::String secret_word = "";
         godot::String path = "";
         godot::Ref<WordDatabase> word_db;
+        godot::Ref<ValidateGuess> word_validator;
     protected:
         static void _bind_methods();
     public:
@@ -27,6 +29,7 @@ namespace FiveLetters {
         void set_path(godot::String _path);
         int get_max_attempts() const;
         godot::String get_path() const;
+        godot::PackedInt32Array process_guess(const godot::String& player_guess_word);
         void set_max_attempts(int p_value);
     };
 

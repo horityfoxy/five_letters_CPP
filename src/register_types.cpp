@@ -1,7 +1,5 @@
 #include "register_types.hpp"
-#include "game_session.hpp"
 
-#include <godot_cpp/core/class_db.hpp>
 #include <godot_cpp/core/defs.hpp>
 #include <godot_cpp/godot.hpp>
 
@@ -10,11 +8,13 @@ using namespace godot;
 void initialize_five_letters(ModuleInitializationLevel p_level) {
     if (p_level != MODULE_INITIALIZATION_LEVEL_SCENE) return;
     ClassDB::register_class<FiveLetters::GameSession>();
+    ClassDB::register_class<FiveLetters::WordDatabase>();
+    ClassDB::register_class<FiveLetters::ValidateGuess>();
 }
 
 void uninitialize_five_letters(ModuleInitializationLevel p_level) {
     if (p_level != MODULE_INITIALIZATION_LEVEL_SCENE) return;
-    // здесь будем отменять регистрацию
+    // отменить регистрацию
 }
 
 extern "C" {

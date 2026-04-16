@@ -1,0 +1,47 @@
+[gd_scene format=3 uid="uid://bhf074bufvxuv"]
+
+[sub_resource type="GDScript" id="GDScript_n7n0r"]
+script/source = "extends HBoxContainer
+
+var current_attempt = 0
+
+var _color_scheme = {
+	0 : Color(\"007500ff\"),
+	1 : Color(\"00ff32ff\"),
+	2 : Color(\"ff0000ff\"),
+}
+
+@onready var letter_zone : Array = get_children()
+
+func set_colors(value : PackedInt32Array) -> void:
+	current_attempt += 1
+	if current_attempt - 1 != get_index(): 
+		return
+	if letter_zone.size() == value.size():
+		for i in letter_zone.size():
+			letter_zone[i].color = _color_scheme[value[i]]
+"
+
+[node name="HBoxContainer" type="HBoxContainer" unique_id=1488189419]
+custom_minimum_size = Vector2(0, 64)
+script = SubResource("GDScript_n7n0r")
+
+[node name="0" type="ColorRect" parent="." unique_id=2052353355]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+
+[node name="1" type="ColorRect" parent="." unique_id=2036202889]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+
+[node name="2" type="ColorRect" parent="." unique_id=573467037]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+
+[node name="3" type="ColorRect" parent="." unique_id=513539187]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+
+[node name="4" type="ColorRect" parent="." unique_id=1293207676]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2

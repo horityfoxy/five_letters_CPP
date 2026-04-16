@@ -1,10 +1,6 @@
 #include "word_database.hpp"
-#include <godot_cpp/classes/ref_counted.hpp>
-#include <godot_cpp/core/class_db.hpp>
-#include <godot_cpp/variant/string.hpp>
 #include <godot_cpp/classes/file_access.hpp>
 #include <godot_cpp/variant/utility_functions.hpp>
-#include <unordered_set>
 
 namespace FiveLetters {
 
