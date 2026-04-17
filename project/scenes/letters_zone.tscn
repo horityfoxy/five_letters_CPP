@@ -1,0 +1,81 @@
+[gd_scene format=3 uid="uid://dkm3iputdonx"]
+
+[sub_resource type="GDScript" id="GDScript_0lfrn"]
+script/source = "extends HBoxContainer
+
+var _iterator: int = 0
+var _word: String = \"\"
+
+@onready var _letters: Array[Node] = get_children()
+
+func add_letter(letter: String) -> bool:
+	if _iterator >= _letters.size(): 
+		return false
+		
+	_letters[_iterator].text = letter
+	_word += letter
+	_iterator += 1
+	
+	return _iterator == _letters.size()
+
+func remove_letter() -> void:
+	if _iterator <= 0: 
+		return
+		
+	_iterator -= 1
+	_letters[_iterator].text = \"\"
+	_word = _word.left(_word.length() - 1)
+
+func get_word() -> String:
+	return _word
+
+func clear() -> void:
+	_iterator = 0
+	_word = \"\"
+	for letter in _letters:
+		letter.text = \"\"
+"
+
+[node name="letters_zone" type="HBoxContainer" unique_id=1488189419]
+custom_minimum_size = Vector2(0, 64)
+script = SubResource("GDScript_0lfrn")
+
+[node name="0" type="Label" parent="." unique_id=2087991926]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 32
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="1" type="Label" parent="." unique_id=520309601]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 32
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="2" type="Label" parent="." unique_id=2129976062]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 32
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="3" type="Label" parent="." unique_id=1945036214]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 32
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="4" type="Label" parent="." unique_id=121542852]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 32
+horizontal_alignment = 1
+vertical_alignment = 1

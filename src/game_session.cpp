@@ -55,6 +55,7 @@ namespace FiveLetters {
 
     godot::PackedInt32Array GameSession::process_guess(const godot::String& player_guess_word) {
         if (max_attempts > 0) {
+            if (!word_db->is_word_valid(player_guess_word)) { return godot::PackedInt32Array(); }
             godot::PackedInt32Array result = word_validator->get_letters_status(player_guess_word, secret_word);
             if (!result.is_empty()) {
                 max_attempts--;

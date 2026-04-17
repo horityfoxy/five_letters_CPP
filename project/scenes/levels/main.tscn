@@ -5,10 +5,11 @@ script/source = "extends Control
 
 @export var _GameSession : GameSession
 @export var _WordsZone : VBoxContainer
+@export var _LettersZone : VBoxContainer
 
 func _ready() -> void:
 	_WordsZone.setup_zone(_GameSession.get_max_attempts(), _GameSession)
-	print(_GameSession.process_guess(\"ладья\"))
+	_LettersZone.setup_zone(_GameSession.get_max_attempts(), _GameSession)
 "
 
 [sub_resource type="GDScript" id="GDScript_72ix8"]
@@ -23,6 +24,51 @@ func setup_zone(max_attempts : int, gamesession : GameSession) -> void:
 		add_child(child)
 "
 
+[sub_resource type="GDScript" id="GDScript_0ip28"]
+script/source = "extends VBoxContainer
+
+var word_zone_scene = preload(\"res://scenes/letters_zone.tscn\")
+
+var current_attempt: int = 0
+var max_attempts: int = 0
+var _session: GameSession
+var _rows: Array[HBoxContainer] = []
+
+func setup_zone(attempts: int, gamesession: GameSession) -> void:
+	max_attempts = attempts
+	_session = gamesession
+	_session.guess_processed.connect(_on_guess_processed)
+	
+	for i in max_attempts:
+		var child = word_zone_scene.instantiate()
+		_rows.append(child)
+		add_child(child)
+
+func _unhandled_key_input(event: InputEvent) -> void:
+	if current_attempt >= max_attempts: return
+	if not event.is_pressed() or event.is_echo(): return
+	
+	var active_row: HBoxContainer = _rows[current_attempt]
+	
+	if event.keycode == KEY_BACKSPACE:
+		active_row.remove_letter()
+		return
+	
+	var unicode: int = event.unicode
+	if _is_russian_char(unicode):
+		var is_word_completed: bool = active_row.add_letter(char(unicode))
+		if is_word_completed:
+			_session.process_guess(active_row.get_word())
+
+func _is_russian_char(unicode: int) -> bool:
+	return (unicode >= 1040 and unicode <= 1071) or \\
+		   (unicode >= 1072 and unicode <= 1103) or \\
+		   unicode == 1025 or unicode == 1105
+
+func _on_guess_processed(_result: PackedInt32Array) -> void:
+	current_attempt += 1
+"
+
 [node name="main" type="Control" unique_id=1268794472]
 layout_mode = 3
 anchors_preset = 15
@@ -31,19 +77,47 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="words" type="Control" parent="." unique_id=507232364 node_paths=PackedStringArray("_GameSession", "_WordsZone")]
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="words" type="Control" parent="." unique_id=507232364 node_paths=PackedStringArray("_GameSession", "_WordsZone", "_LettersZone")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = SubResource("GDScript_2vj2h")
 _GameSession = NodePath("GameSession")
 _WordsZone = NodePath("words_zone")
+_LettersZone = NodePath("letters_zone")
 
 [node name="GameSession" type="GameSession" parent="words" unique_id=147646485]
 path = "res://assets/database/ru.txt"
 
 [node name="words_zone" type="VBoxContainer" parent="words" unique_id=1291712528]
-layout_mode = 0
-offset_right = 327.0
-offset_bottom = 328.0
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -163.5
+offset_top = -164.0
+offset_right = 163.5
+offset_bottom = 164.0
+grow_horizontal = 2
+grow_vertical = 2
 script = SubResource("GDScript_72ix8")
+
+[node name="letters_zone" type="VBoxContainer" parent="words" unique_id=81796117]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -163.5
+offset_top = -164.0
+offset_right = 163.5
+offset_bottom = 164.0
+grow_horizontal = 2
+grow_vertical = 2
+script = SubResource("GDScript_0ip28")

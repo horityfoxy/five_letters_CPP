@@ -14,6 +14,7 @@ var _color_scheme = {
 @onready var letter_zone : Array = get_children()
 
 func set_colors(value : PackedInt32Array) -> void:
+	if value.is_empty(): return
 	current_attempt += 1
 	if current_attempt - 1 != get_index(): 
 		return
@@ -22,7 +23,7 @@ func set_colors(value : PackedInt32Array) -> void:
 			letter_zone[i].color = _color_scheme[value[i]]
 "
 
-[node name="HBoxContainer" type="HBoxContainer" unique_id=1488189419]
+[node name="word_zone" type="HBoxContainer" unique_id=1488189419]
 custom_minimum_size = Vector2(0, 64)
 script = SubResource("GDScript_n7n0r")
 
